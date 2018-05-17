@@ -90,7 +90,7 @@
 				<h4> 내용 :  </h4>
 				<input type="hidden"  id="reHide" name="re_del">
 				<input type="hidden" name="edit_subject">
-				<input type="hidden" name="smarteditor" value='${boardVO.board_content }'>
+<%-- 				<input type="hidden" name="smarteditor" value='${boardVO.board_content }'> --%>
 				<input type="hidden" name="board_seq" value="${boardVO.board_seq }">
 				<input type="hidden" name="edit_title" value="${boardVO.board_title }">
 				<input type="hidden" name="group_seq" value="${boardVO.group_seq }">
