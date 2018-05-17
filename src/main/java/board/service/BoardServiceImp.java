@@ -118,19 +118,29 @@ public class BoardServiceImp implements BoardServiceInf {
 		StringBuffer pageNav = new StringBuffer();
 		pageNav.append("<nav>");
 		pageNav.append("	<ul class=\"pagination\">");
-		pageNav.append("		<li><a href=\"viewExchange?page=1&pageSize=10\" aria-label=\"Previous\">");
-		pageNav.append("			<span aria-hidden=\"true\">&laquo;</span></a></li>");
-		
+		if(page != 1){
+			pageNav.append("		<li><a href=\"viewExchange?page=1&pageSize=10&board_kind="+category_seq+"\" aria-label=\"Previous\">");
+			pageNav.append("			<span aria-hidden=\"true\">&laquo;</span></a></li>");
+			
+			pageNav.append("		<li><a href=\"viewExchange?page="+ (page-1) +"&pageSize=10&board_kind="+category_seq+"\" aria-label=\"Previous\">");
+			pageNav.append("			<span aria-hidden=\"true\">&lt;</span></a></li>");
+		}
 		//pageTotalCnt만큼 루프를 돌리고 싶을 때
 		for (int i = 1; i <= pageTotalCnt; i++) {
 			if(i == page){
 				pageNav.append("				<li class='active'><a href=\"viewExchange?page="+ i +"&pageSize=10&board_kind="+category_seq+"\">"+ i +"</a></li>");
 			}else{
 				pageNav.append("				<li><a href=\"viewExchange?page="+ i +"&pageSize=10&board_kind="+category_seq+"\">"+ i +"</a></li>");
+				
 			}
 		}
-		
-		pageNav.append("				<li><a href=\"getviewExchange?page="+ pageTotalCnt +"&pageSize=10&board_kind="+category_seq+"\" aria-label=\"Next\"> <span aria-hidden=\"true\">&raquo;</span></a></li>");
+		if(page != pageTotalCnt){
+			pageNav.append("		<li><a href=\"viewExchange?page="+ (page+1) +"&pageSize=10&board_kind="+category_seq+"\" aria-label=\"Previous\">");
+			pageNav.append("			<span aria-hidden=\"true\">&gt;</span></a></li>");
+			
+			pageNav.append("				<li><a href=\"viewExchange?page="+ pageTotalCnt +"&pageSize=10&board_kind="+category_seq+"\" aria-label=\"Next\"> <span aria-hidden=\"true\">&raquo;</span></a></li>");
+			
+		}
 		pageNav.append("	</ul>");
 		pageNav.append("</nav>");
 		

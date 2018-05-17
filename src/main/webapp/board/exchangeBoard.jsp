@@ -43,7 +43,7 @@
     
       <div class="row">
        <%@ include file="/layout/left.jsp" %> 
-       <form action="${pageContext.request.contextPath }\viewContent" id="frm">
+       <form action="${pageContext.request.contextPath }/viewContent" id="frm">
        
        <input type="hidden" id="board_seq" name="board_seq">
        <input type="hidden" name="board_kind" value="${board_kind }">
@@ -51,7 +51,7 @@
        <input type="hidden" name="reg_id">
         <h2 class="sub-header"> ${board_kind_nm } </h2>
         
-          <div class="table-responsive">
+          <div class="table-responsive" style="height: 427px;">
           
             <table class="table">
               <thead>
@@ -77,10 +77,10 @@
               	</c:when>
               	<c:otherwise>
                 <tr class="boardSelect">
-                  <td>${vo.board_seq }</td>
-                  <td>${vo.reg_id }</td>
-                  <td>${vo.board_title }</td>
-                  <td><fmt:formatDate value="${vo.reg_dt }" pattern="yyyy-MM-dd"/></td>
+                  <td style="width: 100px">${vo.board_seq }</td>
+                  <td style="width: 300px">${vo.reg_id }</td>
+                  <td style="width: 1000px">${vo.board_title }</td>
+                  <td style="width: 328px"><fmt:formatDate value="${vo.reg_dt }" pattern="yyyy-MM-dd"/></td>
                 </tr>
                 </c:otherwise>
                 </c:choose>
