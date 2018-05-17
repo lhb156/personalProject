@@ -114,9 +114,12 @@ public class BoardWriteServlet extends HttpServlet {
 			
 			
 		}else if(btnValue.equals("re_del")){
+			
 			int reply_seq = Integer.parseInt(request.getParameter("re_del"));
-			int deleteReply = service.deleteReply(reply_seq);
 			int re_board_seq = Integer.parseInt(request.getParameter("board_seq"));
+			int deleteReply = service.deleteReply(reply_seq);
+			
+			
 			List<Board_kindVO> list = service.getBoardKind();
 			
 			List<ReplyVO> replyList = service.getReplyList(re_board_seq);
@@ -126,10 +129,7 @@ public class BoardWriteServlet extends HttpServlet {
 			request.setAttribute("replyList", replyList);
 			RequestDispatcher rd = request.getRequestDispatcher("/viewContent?board_seq="+re_board_seq);
 			rd.forward(request, response);
-			
 		}
-	
-		
 		
 	}
 
