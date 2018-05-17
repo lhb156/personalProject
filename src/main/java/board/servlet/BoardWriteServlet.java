@@ -109,32 +109,24 @@ public class BoardWriteServlet extends HttpServlet {
 			request.setAttribute("kindList", list);
 			request.setAttribute("replyList", replyList);
 			
-			RequestDispatcher rd = request.getRequestDispatcher(request.getContextPath()+"/viewContent?board_seq="+re_board_seq);
+			RequestDispatcher rd = request.getRequestDispatcher("/viewContent?board_seq="+re_board_seq);
 			rd.forward(request, response);
-//			response.sendRedirect("/board/boardView.jsp");
 			
 			
-		}else if(btnValue.equals("editBtn")){
-			//예비
-//			HttpSession session = request.getSession();
-//			MemberVO memVO = (MemberVO) session.getAttribute("memVO");
-//			String reg_id = memVO.getMem_id();
-//			int category_seq =Integer.parseInt(request.getParameter("board_kind"));
-//			
-//			int board_seq = Integer.parseInt(request.getParameter("board_seq"));
-//			String board_title = request.getParameter("edit_title");
-//			String board_content = request.getParameter("smarteditor");
-//			
-//			BoardVO boardVO = new BoardVO();
-//			boardVO.setCategory_seq(category_seq);
-//			boardVO.setReg_id(reg_id);
-//			boardVO.setBoard_title(board_title);
-//			boardVO.setBoard_content(board_content);
-//			boardVO.setBoard_seq(board_seq);
-//			
-//			int result = service.modifyBoard(boardVO);
-//			RequestDispatcher rd = request.getRequestDispatcher("/returnList");
-//			rd.forward(request, response);
+		}else if(btnValue.equals("re_del")){
+			int reply_seq = Integer.parseInt(request.getParameter("re_del"));
+			int deleteReply = service.deleteReply(reply_seq);
+			int re_board_seq = Integer.parseInt(request.getParameter("board_seq"));
+			List<Board_kindVO> list = service.getBoardKind();
+			
+			List<ReplyVO> replyList = service.getReplyList(re_board_seq);
+			
+			request.setAttribute("board_seq", re_board_seq);
+			request.setAttribute("kindList", list);
+			request.setAttribute("replyList", replyList);
+			RequestDispatcher rd = request.getRequestDispatcher("/viewContent?board_seq="+re_board_seq);
+			rd.forward(request, response);
+			
 		}
 	
 		

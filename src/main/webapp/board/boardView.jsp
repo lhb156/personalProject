@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -39,15 +39,23 @@
 			$('#frm').submit();
 		})
 		
-		
-		$('.reg_id').click(function(){
+		$('#deleteBtn').click(function(){
 			$('#frm').attr('method','get');
-			if( $(this).val() == "수정"){
-				$('#editBtn').val("수정");
-			}else if($(this).val() == "삭제"){
-				$("#editBtn").val("삭제");
-			}
 			
+			$("#editBtn").val("삭제");
+			$('#frm').submit();
+		})
+		
+		$('#modifyBtn').click(function(){
+			$('#frm').attr('method','get');
+			
+			$('#editBtn').val("수정");
+			$('#frm').submit();
+		})
+		
+		$('#re_del').click(function(){
+			$('#frm').attr('method','get');
+			$('#editBtn').val("re_del");
 			$('#frm').submit();
 		})
 	})
@@ -66,6 +74,7 @@
 				<div class="panel-heading" ><label name="new_subject" style="width: 550px;"><h4>제목 : ${boardVO.board_title }</h4></label></div>
 				<div class="panel-body">
 				<h4> 내용 :  </h4>
+				<input type="hidden" name="re_del">
 				<input type="hidden" name="edit_subject">
 				<input type="hidden" name="smarteditor" value='${boardVO.board_content }'>
 				<input type="hidden" name="board_seq" value="${boardVO.board_seq }">
@@ -90,7 +99,7 @@
 			</div>
 			<br><br>
 			<div class="writeBtn" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="margin-left: 190px; width: 793px; height: 60px; ">
-				<textarea id="replytxt" rows="2" cols="101" style="height: 46px;vertical-align: middle;"></textarea> <input id="replyWrtie"class="btn btn-default"  type="button" value="등록" style="text-align: right; height: 46px;vertical-align: middle;" >
+				<textarea id="replytxt" name="replytxt" rows="2" cols="101" style="height: 46px;vertical-align: middle;"></textarea> <input id="replyWrtie"class="btn btn-default"  type="button" value="등록" style="text-align: right; height: 46px;vertical-align: middle;" >
 		   	</div>
 	   		<div class="panel panel-default" style="margin-left: 188px;width: 800px;">
 	   		<table class="table table-hover">
@@ -102,13 +111,16 @@
 			       <th></th>
 			     </tr>
 			   </thead>
+			  	
 			   <tbody id="reqly">
+			     <c:forEach items="${replyList }" var="vo">
 			     <tr>
-			       <td>John</td>
-			       <td>Doe</td>
-			       <td>john@example.com</td>
-			       <td><input type="button" class="btn btn-default" value="삭제"></td>
+			       <td>${vo.re_mem_id }</td>
+			       <td>${vo.re_cont }</td>
+			       <td><fmt:formatDate value="${vo.re_date }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+			       <td><input id="re_del" type="button" class="btn btn-default" value="삭제"></td>
 			     </tr>
+			     </c:forEach>
 			   </tbody>
 			 </table>
 		   		</div>
