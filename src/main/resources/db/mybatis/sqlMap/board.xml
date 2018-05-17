@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="board">
+ 
+ <!-- 해당 게시판 게시물리스트 받아오기 -->
+ <select id="getBoardList" parameterType="int" resultType="boardVO">
+ 	SELECT *
+ 	FROM   board
+ 	WHERE  category_seq = #{category_seq}
+ </select>
+ 
+ <!-- 게시판 List 받아오기 -->
+ <select id="getBoardKind" resultType="boardKindVO">
+ 	SELECT * 
+	FROM   board_kind
+	ORDER BY board_kind_seq ASC
+ </select>
+ 
+ <!-- 게시판 이름정보 받아오기 -->
+ <select id="getBoardKindName" parameterType="int" resultType="String">
+ 	SELECT board_kind_nm
+ 	FROM   board_kind
+ 	where  board_kind_seq = #{board_kind_seq}
+ </select>
+ 
+ <!-- 새로운 글 작성 -->
+ <insert id="newBoardWrite" parameterType="boardVO">
+ 	INSERT INTO	BOARD
+ 	VALUES (BOARD_SEQ.NEXTVAL, #{category_seq}, null, #{reg_id}, BOARD_SEQ.CURRVAL,  #{board_title}, #{board_content}, sysdate, 'n')
+ </insert>
+ 
+ <!-- 클릭한 게시물 정보 얻어오기 -->
+ <select id="getBoardInfo" parameterType="int" resultType="boardVO">
+ 	SELECT * 
+ 	FROM   BOARD
+ 	WHERE  board_seq = #{board_seq}
+ </select>
+ 
+ <!-- 게시글 수정 -->
+ <update id="modifyBoard" parameterType="boardVO">
+ 	UPDATE BOARD
+ 	SET    board_title = #{board_title}, board_content = #{board_content}, reg_dt = sysdate
+ 	WHERE  board_seq = #{board_seq}
+ </update>
+ 
+ <!-- 게시글 삭제처리 -->
+ <update id="deleteBoard" parameterType="int">
+ 	UPDATE BOARD
+	SET    del_yn = 'y'
+	WHERE  board_seq = #{board_seq}
+ </update>
+
+<!-- 게시판 활성화여부 변경 -->
+ <update id="eidtBoard" parameterType="int">
+ 	UPDATE board_kind
+	SET    board_kind_yn = DECODE(board_kind_yn,'y','n','n','y')
+	WHERE  board_kind_seq = #{board_kind_seq}
+ </update>
+ 
+ <!-- 게시판 생성 -->
+ <insert id="insertBoardKind" parameterType="map">
+ 	INSERT INTO BOARD_KIND
+ 	VALUES (BOARD_KIND_SEQ.NEXTVAL, #{create_id}, #{board_kind_nm}, sysdate, 'y' )
+ </insert>
+ 
+ <!-- 게시판의 게시물 개수-->
+ <select id="getBoardCnt" parameterType="int" resultType="int">
+ 	SELECT count(*)
+	FROM   BOARD
+	WHERE  category_seq = #{category_seq}
+ </select>
+ 
+ <!-- 페이징 게시물 리스트 -->
+ <select id="getBoardPageList" parameterType="map" resultType="boardVO">
+ 	SELECT * 
+	FROM
+		(
+		SELECT rownum rn, lpad('≫', 4*(level-1)) || board_title "board_title", board_seq, pboard_seq, category_seq, group_seq, board_content, reg_id, reg_dt, del_yn
+		FROM board 
+		WHERE category_seq = #{category_seq}
+		START WITH PBOARD_SEQ IS NULL
+		CONNECT BY PRIOR board_seq = pboard_seq
+		ORDER SIBLINGS BY group_seq DESC
+		)
+	WHERE rn between (#{page}-1) * #{pageSize} + 1 and #{page} * #{pageSize}
+ </select>
+ 
+ <!-- 답글 -->
+ <insert id="reBoard" parameterType="boardVO" >
+ 	INSERT INTO BOARD 
+ 	VALUES (BOARD_SEQ.NEXTVAL, #{category_seq}, #{pboard_seq}, #{reg_id}, #{group_seq},  #{board_title}, #{board_content}, sysdate, 'n')
+ </insert>
+ 
+ <insert id="insertReply" parameterType="replyVO">
+ 	INSERT INTO REPLY
+ 	VALUES (REPLY_SEQ.NEXTVAL, #{re_board_seq}, #{re_mem_id}, #{re_cont}, sysdate, 'n' )
+ </insert>
+ 
+ <update id="deleteReply" parameterType="int">
+ 	UPDATE REPLY
+ 	SET    re_yn = 'y'
+ 	WHERE  reply_seq = #{reply_seq}
+ </update>
+ 
+ <select id="getReplyList" resultType="replyVO">
+ 	SELECT * 
+	FROM  REPLY
+	WHERE re_board_seq = #{re_board_seq}	
+ </select>
+ </mapper>
+  
