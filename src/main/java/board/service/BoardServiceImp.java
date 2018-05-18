@@ -114,8 +114,11 @@ public class BoardServiceImp implements BoardServiceInf {
 		
 		int pageTotalCnt = (int)(Math.ceil((double)userTotalCnt /10));
 		
-		
 		StringBuffer pageNav = new StringBuffer();
+		
+		if(pageTotalCnt!=0){
+			
+		
 		pageNav.append("<nav>");
 		pageNav.append("	<ul class=\"pagination\">");
 		if(page != 1){
@@ -143,7 +146,7 @@ public class BoardServiceImp implements BoardServiceInf {
 		}
 		pageNav.append("	</ul>");
 		pageNav.append("</nav>");
-		
+		}
 		return pageNav.toString();
 	}
 

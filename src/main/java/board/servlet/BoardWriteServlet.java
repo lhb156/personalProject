@@ -1,15 +1,21 @@
 package board.servlet;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import member.model.MemberVO;
 import board.model.BoardVO;
@@ -19,8 +25,13 @@ import board.service.BoardServiceImp;
 import board.service.BoardServiceInf;
 
 @WebServlet("/boardWrite")
+@MultipartConfig(maxFileSize=1024*1000*3, maxRequestSize=1024*1000*3*5)
 public class BoardWriteServlet extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
+	
+	private final String UPLOAD_PATH = "D:/A_TeachingMaterial/7.JspSpring/uploadStorage";
+	
 	BoardServiceInf service;
        
     public BoardWriteServlet() {
@@ -134,18 +145,37 @@ public class BoardWriteServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		request.setCharacterEncoding("utf-8");
 		HttpSession session = request.getSession();
+		
+		Collection<Part> parts = request.getParts();
+		
+		PrintWriter rw = response.getWriter();
+		
+		String filePath = "";
+		Part profilePart = request.getPart("addFile");
+		if(profilePart.getSize() > 0){
+			filePath = UPLOAD_PATH + File.separator + UUID.randomUUID().toString();
+			System.out.println(filePath);
+			profilePart.write(filePath);
+			profilePart.delete();
+		}
+		//filePath webmember.mem_profile에 저장
+		// 기존 : uri 형태로 지정 /uploadfolder/jellyfish.jpg
+		// 변경 : 물리적 디스크의 절대경로로 저장 "D:\\A_TeachingMaterial\\7.JspSpring\\uploadStorage";
+		rw.write("filePath : "+ filePath + "<br>");
+		
 		MemberVO memVO = (MemberVO) session.getAttribute("memVO");
 		String reg_id = memVO.getMem_id();
 		int category_seq =Integer.parseInt(request.getParameter("board_kind"));
 		String board_title = request.getParameter("new_subject");
 		String board_content = request.getParameter("smarteditor");
 		
-		int pboard_seq=0;
+		int pboard_seq= 0;
 		
-		if(request.getParameter("pboard_seq")!= ""){
+		System.out.println("length"+request.getParameter("pboard_seq").length());
+		if(request.getParameter("pboard_seq").length()!=0){
+			System.out.println("pboard_seq : "+request.getParameter("pboard_seq"));
 			pboard_seq = Integer.parseInt(request.getParameter("pboard_seq"));
 			request.setAttribute("pboard_seq", pboard_seq);
 		}

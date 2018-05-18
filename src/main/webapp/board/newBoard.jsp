@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%@ include file="/layout/css.jsp" %>+
+<%@ include file="/layout/css.jsp" %>
 <!-- Favicon -->
 <link rel="shortcut icon" href="favicon.ico" />
 <script src="${pageContext.request.contextPath }/SE2/js/HuskyEZCreator.js"></script>
@@ -16,7 +16,7 @@ $(document).ready(function() {
 	nhn.husky.EZCreator.createInIFrame({
 		oAppRef : oEditors, // 전역변수 명과 동일해야 함.
 		elPlaceHolder : "smarteditor", // 에디터가 그려질 textarea ID 값과 동일 해야 함.
-		sSkinURI : "${pageContext.request.c	ontextPath }/SE2/SmartEditor2Skin.html", // Editor HTML
+		sSkinURI : "${pageContext.request.contextPath }/SE2/SmartEditor2Skin.html", // Editor HTML
 		fCreator : "createSEditor2", // SE2BasicCreator.js 메소드명이니 변경 금지 X
 		htParams : {
 			// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
@@ -56,6 +56,25 @@ function validation(){
 }
 
 </script>
+<script>
+	$(function(){
+		$("input[type=file]").change(function () {
+           
+            var fileInput = document.getElementById("addFile");
+             
+            var files = fileInput.files;
+            var file;
+            var count = files.length; 
+            if(count > 5){
+            	alert("첨부파일은 5개 이상 업로드 하실 수 없습니다.");
+            	$("input[type=file]").val("");
+            	return false;
+            }
+            
+             
+        });
+	})
+</script>
 <style>
 	#write{
 		margin-left: 10%;
@@ -74,7 +93,7 @@ function validation(){
 	<div id="write">
 	<h2><p>New Write</p></h2>
 	<br><br>
-	<form action="${pageContext.request.contextPath }/boardWrite" method="post" id="frm">
+	<form action="${pageContext.request.contextPath }/boardWrite" method="post" id="frm" enctype="multipart/form-data">
 	SUBJECT : <input type="text" name="new_subject"  style="width:  550px;">
 	 
 	<br><br>
@@ -86,6 +105,12 @@ function validation(){
 	<input type="hidden" name="board_kind" value="${board_kind }">
 	<input type="hidden" name="pboard_seq" value="${pboard_seq }">
 	<input type="hidden" name="group_seq" value="${group_seq }">
+	<input type="hidden" name="board_kind2" value="${board_kind }">
+	
+	<input class="btn btn-default" type="file" id="addFile" name="addFile[]"  title="파일 첨부는 5개까지만 가능합니다." multiple maxlength="5"> 
+	<br>
+	
+	<br>
 	<textarea name="smarteditor" id="smarteditor" rows="10" cols="100" style="width:766px; height:412px;"></textarea> 
 	</form>
 	<br>

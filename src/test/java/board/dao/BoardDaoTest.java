@@ -286,7 +286,7 @@ public class BoardDaoTest {
 	* 변경이력 :
 	* @param reply_seq
 	* @return
-	* Method 설명 : 리플을 지우는 메서드
+	* Method 설명 : 댓글을 지우는 메서드
 	 */
 	@Test
 	public void deleteReplyTest(){
