@@ -9,6 +9,7 @@
 		<typeAlias alias="boardVO" type="board.model.BoardVO"/>
 		<typeAlias alias="boardKindVO" type="board.model.Board_kindVO"/>
 		<typeAlias alias="replyVO" type="board.model.ReplyVO"/>
+		<typeAlias alias="fileVO" type="board.model.AdFileVO"/>
 	</typeAliases>
   <environments default="development">
     <environment id="development">

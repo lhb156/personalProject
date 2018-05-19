@@ -6,6 +6,7 @@ import java.util.Map;
 
 import board.dao.BoardDaoImp;
 import board.dao.BoardDaoInf;
+import board.model.AdFileVO;
 import board.model.BoardVO;
 import board.model.Board_kindVO;
 import board.model.ReplyVO;
@@ -178,6 +179,19 @@ public class BoardServiceImp implements BoardServiceInf {
 	public List<ReplyVO> getReplyList(int re_board_seq) {
 		List<ReplyVO> list =  null;
 		list = dao.getReplyList(re_board_seq);
+		return list;
+	}
+
+	@Override
+	public int insertFile(AdFileVO adFile) {
+		int result = 0;
+		result = dao.insertFile(adFile);
+		return result;
+	}
+
+	@Override
+	public List<AdFileVO> getFileList(int board_seq) {
+		List<AdFileVO> list = dao.getFileList(board_seq);
 		return list;
 	}
 	

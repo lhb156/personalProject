@@ -3,6 +3,7 @@ package board.dao;
 import java.util.List;
 import java.util.Map;
 
+import board.model.AdFileVO;
 import board.model.BoardVO;
 import board.model.Board_kindVO;
 import board.model.ReplyVO;
@@ -187,4 +188,27 @@ public interface BoardDaoInf {
 	* Method 설명 : 해당 게시물의 댓글을 가져오는 메서드
 	 */
 	public List<ReplyVO> getReplyList(int re_board_seq);
+	
+	/**
+	 * 
+	* Method : insertFile
+	* 최초작성일 : 2018. 5. 18.
+	* 작성자 : PC22
+	* 변경이력 :
+	* @param adFile
+	* Method 설명 :
+	 */
+	public int insertFile(AdFileVO adFile);
+	
+	/**
+	 * 
+	* Method : getFileList
+	* 최초작성일 : 2018. 5. 18.
+	* 작성자 : PC22
+	* 변경이력 :
+	* @param adFile
+	* @return
+	* Method 설명 :
+	 */
+	public List<AdFileVO> getFileList(int board_seq);
 }

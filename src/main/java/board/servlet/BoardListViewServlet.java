@@ -63,6 +63,8 @@ public class BoardListViewServlet extends HttpServlet {
 		request.setAttribute("kindList", kindList);
 		request.setAttribute("list", list);
 		
+		
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/board/exchangeBoard.jsp");
 		rd.forward(request, response);
 		

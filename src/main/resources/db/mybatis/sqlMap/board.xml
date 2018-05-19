@@ -110,5 +110,21 @@
 	FROM  REPLY
 	WHERE re_board_seq = #{re_board_seq}	
  </select>
+ 
+ <!-- 파일첨부  -->
+ <insert id="insertFile" parameterType="fileVO">
+ 	INSERT INTO ADFILE
+ 	VALUES( ADFILE_SEQ.NEXTVAL, BOARD_SEQ.CURRVAL, #{adfile_route} )
+	
+ </insert>
+ 
+ <!-- 첨부파일 리스트 -->
+ <select id="getFileList" resultType="fileVO" parameterType="int">
+ 	SELECT * 
+ 	FROM   ADFILE
+ 	WHERE  board_seq = #{board_seq}
+ </select>
+ 
+ 
  </mapper>
   

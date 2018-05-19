@@ -98,6 +98,11 @@
 				<input id="editBtn" type="hidden" name="editBtn">
 				<div>
 				${boardVO.board_content }
+				<br><br>
+				첨부파일 :<br>
+				<c:forEach items="${fileList }" var="vo">
+					<a>${vo.adfile_route }</a> <br>
+				</c:forEach>
 				</div>
 				</div>
 				<br><br>

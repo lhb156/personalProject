@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import board.model.AdFileVO;
 import board.model.BoardVO;
 import board.model.Board_kindVO;
 import board.model.ReplyVO;
@@ -171,6 +172,25 @@ private static BoardDaoInf dao = new BoardDaoImp();
 	public List<ReplyVO> getReplyList(int re_board_seq) {
 		SqlSession session = ssf.openSession();
 		List<ReplyVO> list = session.selectList("board.getReplyList",re_board_seq);
+		session.close();
+		return list;
+	}
+
+	@Override
+	public int insertFile(AdFileVO adFile) {
+		SqlSession session = ssf.openSession();
+		int result = session.insert("board.insertFile",adFile);
+		session.commit();
+		session.close();
+		return result;
+	}
+
+	@Override
+	public List<AdFileVO> getFileList(int board_seq) {
+		SqlSession session = ssf.openSession();
+		List<AdFileVO> list= null;
+		list = session.selectList("board.getFileList",board_seq);
+		session.close();
 		return list;
 	}
 

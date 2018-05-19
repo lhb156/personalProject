@@ -4,6 +4,8 @@ public class AdFileVO {
 	private int adfile_seq;
 	private int board_seq;
 	private String adfile_route;
+	
+	
 	public int getAdfile_seq() {
 		return adfile_seq;
 	}

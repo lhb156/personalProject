@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import board.model.AdFileVO;
 import board.model.BoardVO;
 import board.model.Board_kindVO;
 import board.model.ReplyVO;
@@ -319,5 +320,47 @@ public class BoardDaoTest {
 		/***Then***/
 		assertEquals(2, list.size());
 	}
+	
+	/**
+	 * 
+	* Method : insertFile
+	* 최초작성일 : 2018. 5. 18.
+	* 작성자 : PC22
+	* 변경이력 :
+	* @param adFile
+	* Method 설명 :
+	 */
+	@Test
+	public void insertFileTest(){
+		/***Given***/
+		AdFileVO adFile = new AdFileVO();
+		adFile.setAdfile_route("테스트사진이당.jpg");
+		/***When***/
+		BoardDaoInf dao = BoardDaoImp.getInstance();
+		int result = dao.insertFile(adFile);
+		/***Then***/
+		assertEquals(1, result);
+	}
+	
+	/**
+	 * 
+	* Method : getFileList
+	* 최초작성일 : 2018. 5. 18.
+	* 작성자 : PC22
+	* 변경이력 :
+	* @param adFile
+	* @return
+	* Method 설명 :
+	 */
+	@Test
+	public void getFileListTest(){
+		/***Given***/
+		
+		/***When***/
+		BoardDaoInf dao = BoardDaoImp.getInstance();
+		/***Then***/
+
+	}
+	
 	
 }

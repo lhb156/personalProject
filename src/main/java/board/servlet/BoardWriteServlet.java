@@ -1,8 +1,6 @@
 package board.servlet;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +16,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import member.model.MemberVO;
+import util.FileUtil;
+import board.model.AdFileVO;
 import board.model.BoardVO;
 import board.model.Board_kindVO;
 import board.model.ReplyVO;
@@ -150,21 +150,6 @@ public class BoardWriteServlet extends HttpServlet {
 		
 		Collection<Part> parts = request.getParts();
 		
-		PrintWriter rw = response.getWriter();
-		
-		String filePath = "";
-		Part profilePart = request.getPart("addFile");
-		if(profilePart.getSize() > 0){
-			filePath = UPLOAD_PATH + File.separator + UUID.randomUUID().toString();
-			System.out.println(filePath);
-			profilePart.write(filePath);
-			profilePart.delete();
-		}
-		//filePath webmember.mem_profile에 저장
-		// 기존 : uri 형태로 지정 /uploadfolder/jellyfish.jpg
-		// 변경 : 물리적 디스크의 절대경로로 저장 "D:\\A_TeachingMaterial\\7.JspSpring\\uploadStorage";
-		rw.write("filePath : "+ filePath + "<br>");
-		
 		MemberVO memVO = (MemberVO) session.getAttribute("memVO");
 		String reg_id = memVO.getMem_id();
 		int category_seq =Integer.parseInt(request.getParameter("board_kind"));
@@ -196,6 +181,30 @@ public class BoardWriteServlet extends HttpServlet {
 			boardVO.setGroup_seq(group_seq);
 			int result = service.reBoard(boardVO);
 		}
+		
+		for (Part part : parts) {
+			if(part.getName().equals("addFile")){
+				String contentString = part.getHeader("Content-disposition");
+				String fileName = FileUtil.getFileName(contentString);
+
+				int value =fileName.lastIndexOf(".");
+				String extension = fileName.substring(value);
+				
+				String uploadPath = getServletContext().getRealPath("/uploadFolder");
+				String filePath = UPLOAD_PATH + java.io.File.separator + UUID.randomUUID().toString()+extension;
+				
+				AdFileVO adFile = new AdFileVO();
+				adFile.setAdfile_route(UUID.randomUUID().toString()+extension);
+				
+				service.insertFile(adFile);
+				
+				part.write(filePath);
+				part.delete();
+			}
+		}
+		//filePath webmember.mem_profile에 저장
+		// 기존 : uri 형태로 지정 /uploadfolder/jellyfish.jpg
+		// 변경 : 물리적 디스크의 절대경로로 저장 "D:\\A_TeachingMaterial\\7.JspSpring\\uploadStorage";
 		
 		request.setAttribute("smarteditor", board_content);
 		request.setAttribute("board_kind", category_seq);

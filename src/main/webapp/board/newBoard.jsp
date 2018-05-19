@@ -107,7 +107,7 @@ function validation(){
 	<input type="hidden" name="group_seq" value="${group_seq }">
 	<input type="hidden" name="board_kind2" value="${board_kind }">
 	
-	<input class="btn btn-default" type="file" id="addFile" name="addFile[]"  title="파일 첨부는 5개까지만 가능합니다." multiple maxlength="5"> 
+	<input class="btn btn-default" type="file" id="addFile" name="addFile"  title="파일 첨부는 5개까지만 가능합니다." multiple > 
 	<br>
 	
 	<br>
